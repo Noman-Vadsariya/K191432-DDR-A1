@@ -76,187 +76,94 @@ namespace Assignment3
             lblProgress.Text = "Generated";
         }
 
-        //private state GetNextState(int currentPos, dir direction)
-        //{
-        //    // convert the current pos into row and col index;
-        //    int rowIndex = currentPos / SIZE;
-        //    int colIndex = currentPos % SIZE;
-        //    switch (direction)
-        //    {
-        //        case dir.East:
-        //            if (colIndex == SIZE - 1)
-        //                return state.NoState;
-        //            colIndex++;
-        //            break;
-        //        case dir.West:
-        //            if (colIndex == 0)
-        //                return state.NoState;
-        //            colIndex--;
-        //            break;
-        //        case dir.North:
-        //            if (rowIndex == 0)
-        //                return state.NoState;
-        //            rowIndex--;
-        //            break;
-        //        case dir.South:
-        //            if (rowIndex == SIZE - 1)
-        //                return state.NoState;
-        //            rowIndex++;
-        //            break;
-        //        default:
-        //            return state.NoState;
-        //    }
-        //    return states[rowIndex,colIndex];
-        //}
+        void ShowState(int position, MazeSolver.state newState)
+        {
+            Button btn = btnList[position];
+            switch (newState)
+            {
+                case MazeSolver.state.Backtracked:
+                    btn.BackColor = SystemColors.ControlDark;
+                    btn.Text = "B";
+                    break;
+                case MazeSolver.state.TraversedToEast:
+                    btn.Text = "\u2192";
+                    break;
+                case MazeSolver.state.TraversedToWest:
+                    btn.Text = "\u2190";
+                    break;
+                case MazeSolver.state.TraversedToNorth:
+                    btn.Text = "\u2191";
+                    break;
+                case MazeSolver.state.TraversedToSouth:
+                    btn.Text = "\u2193";
+                    break;
+            }
 
-        //int GetPos(int currentPos, dir direction)
-        //{
-        //    // convert the current pos into row and col index;
-        //    int rowIndex = currentPos / SIZE;
-        //    int colIndex = currentPos % SIZE;
+            Application.DoEvents();
+            Thread.Sleep(200);
+        }
 
-        //    // no error checking here, assuming everything is OK
-        //    if ( direction == dir.East ) colIndex++;
-        //    if ( direction == dir.West) colIndex--;
-        //    if ( direction == dir.North) rowIndex--;
-        //    if ( direction == dir.South ) rowIndex++;
+        void SetState(int position, MazeSolver.state newState)
+        {
+            // convert the current pos into row and col index;
+            int rowIndex = position / MC.SIZE;
+            int colIndex = position % MC.SIZE;
 
-        //    return (rowIndex * SIZE + colIndex);
-        //}
+            this.M.states[rowIndex, colIndex] = newState;
+            ShowState(position, newState);
+        }
 
-        //int GetAvailablePos(int currentPos, out dir direction)
-        //{
-        //    // move right
-        //    direction = dir.East;
-        //    state rightState = GetNextState(currentPos, direction);
-        //    if (rightState == state.Blank || rightState == state.End)
-        //        return GetPos(currentPos, direction);
+        MazeSolver.state GetStateFromDirection(MazeSolver.dir direction)
+        {
+            switch (direction)
+            {
+                case MazeSolver.dir.East: return MazeSolver.state.TraversedToEast;
+                case MazeSolver.dir.West: return MazeSolver.state.TraversedToWest;
+                case MazeSolver.dir.North: return MazeSolver.state.TraversedToNorth;
+                case MazeSolver.dir.South: return MazeSolver.state.TraversedToSouth;
+            }
+            return MazeSolver.state.NoState;
+        }
 
-        //    // move down
-        //    direction = dir.South;
-        //    state downState = GetNextState(currentPos, direction);
-        //    if (downState == state.Blank || downState == state.End)
-        //        return GetPos(currentPos, direction);
-            
-        //    // move left
-        //    direction = dir.West;
-        //    state leftState = GetNextState(currentPos, direction);
-        //    if (leftState == state.Blank || leftState == state.End)
-        //        return GetPos(currentPos, direction);
+        void MoveNextPos(int currentPos, int nextPos, MazeSolver.dir direction)
+        {
+            MazeSolver.state currentState = this.M.states[currentPos / MC.SIZE, currentPos % MC.SIZE];
+            MazeSolver.state nextState = this.M.states[nextPos / MC.SIZE, nextPos % MC.SIZE];
 
-        //    // move up
-        //    direction = dir.North;
-        //    state upState = GetNextState(currentPos, direction);
-        //    if (upState == state.Blank || upState == state.End)
-        //        return GetPos(currentPos, direction);
-
-        //    // if no blanks look for traversed states, if there is any, to backtrack
-        //    direction = dir.East;
-        //    if (rightState == state.TraversedToWest)
-        //        return GetPos(currentPos, direction);
-        //    direction = dir.South;
-        //    if (downState == state.TraversedToNorth)
-        //        return GetPos(currentPos, direction);
-        //    direction = dir.West;
-        //    if (leftState == state.TraversedToEast)
-        //        return GetPos(currentPos, direction);
-        //    direction = dir.North;
-        //    if (upState == state.TraversedToSouth)
-        //        return GetPos(currentPos, direction);
-
-        //    direction = dir.NA;
-        //    return -1;
-        //}
-
-        //void ShowState(int position, state newState)
-        //{
-        //    Button btn = btnList[position];
-        //    switch (newState)
-        //    {
-        //        case state.Backtracked: 
-        //            btn.BackColor = SystemColors.ControlDark;
-        //            btn.Text = "B";
-        //            break;
-        //        case state.TraversedToEast:
-        //            btn.Text = "\u2192";
-        //            break;
-        //        case state.TraversedToWest:
-        //            btn.Text = "\u2190";
-        //            break;
-        //        case state.TraversedToNorth:
-        //            btn.Text = "\u2191";
-        //            break;
-        //        case state.TraversedToSouth:
-        //            btn.Text = "\u2193";
-        //            break;
-        //    }
-
-        //    Application.DoEvents();
-        //    Thread.Sleep(200);
-        //}
-
-        //void SetState(int position, state newState)
-        //{
-        //    // convert the current pos into row and col index;
-        //    int rowIndex = position / SIZE;
-        //    int colIndex = position % SIZE;
-
-        //    states[rowIndex, colIndex] = newState;
-        //    ShowState(position, newState);
-        //}
-
-        //state GetStateFromDirection(dir direction)
-        //{
-        //    switch (direction)
-        //    {
-        //        case dir.East: return state.TraversedToEast;
-        //        case dir.West: return state.TraversedToWest;
-        //        case dir.North: return state.TraversedToNorth;
-        //        case dir.South: return state.TraversedToSouth;
-        //    }
-        //    return state.NoState;
-        //}
-
-        //void MoveNextPos(int currentPos, int nextPos, dir direction)
-        //{
-        //    state currentState = states[currentPos / SIZE, currentPos % SIZE];
-        //    state nextState = states[nextPos / SIZE, nextPos % SIZE];
-
-        //    if (nextState == state.Blank || nextState == state.End)
-        //    {
-        //        SetState(currentPos, GetStateFromDirection(direction));
-        //    }
-        //    if (nextState == state.TraversedToNorth || nextState == state.TraversedToSouth
-        //        || nextState == state.TraversedToEast || nextState == state.TraversedToWest)
-        //        SetState(currentPos, state.Backtracked);
-        //}
+            if (nextState == MazeSolver.state.Blank || nextState == MazeSolver.state.End)
+            {
+                SetState(currentPos, GetStateFromDirection(direction));
+            }
+            if (nextState == MazeSolver.state.TraversedToNorth || nextState == MazeSolver.state.TraversedToSouth
+                || nextState == MazeSolver.state.TraversedToEast || nextState == MazeSolver.state.TraversedToWest)
+                SetState(currentPos, MazeSolver.state.Backtracked);
+        }
 
         private void btnSolve_Click(object sender, EventArgs e)
         {
-            //lblProgress.Text = "Solving...";
-            ////Application.DoEvents();
-            //int currentPos = START_POS;
-            //while (currentPos != END_POS)
-            //{
-            //    //SetState(currentPos, state.Traversed);
-            //    dir direction = dir.NA;
-            //    int nextPos = GetAvailablePos(currentPos, out direction );
-            //    if (nextPos == -1)
-            //    {
-            //        lblProgress.Text = "No solution!";
-            //        MessageBox.Show("No solution!");
-            //        break;
-            //    }
-            //    MoveNextPos(currentPos, nextPos, direction);
-            //    currentPos = nextPos;
-            //}
+            lblProgress.Text = "Solving...";
+            Application.DoEvents();
+            int currentPos = MC.START_POS;
+            while (currentPos != MC.END_POS)
+            {
+                MazeSolver.dir direction = MazeSolver.dir.NA;
+                int nextPos = M.GetAvailablePos(currentPos, out direction);
+                if (nextPos == -1)
+                {
+                    lblProgress.Text = "No solution!";
+                    MessageBox.Show("No solution!");
+                    break;
+                }
+                MoveNextPos(currentPos, nextPos, direction);
+                currentPos = nextPos;
+            }
 
-            //if (currentPos == END_POS)
-            //{
-            //    lblProgress.Text = "Solved!";
-            //    MessageBox.Show("Solved!");
-            //}
-            //btnSolve.Enabled = false;
+            if (currentPos == MC.END_POS)
+            {
+                lblProgress.Text = "Solved!";
+                MessageBox.Show("Solved!");
+            }
+            btnSolve.Enabled = false;
         }
-    }
+        }
 }
