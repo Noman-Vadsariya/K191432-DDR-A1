@@ -1,118 +1,90 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
+using System.Threading;
 
 namespace Assignment3
 {
-    public class MazeSolver : ISubject
+    public partial class frmMazeSolver : Form
     {
-        public enum state
-        {
-            Start,
-            End,
-            Blank,
-            Hurdle,
-            //Traversed,
-            TraversedToSouth,
-            TraversedToNorth,
-            TraversedToEast,
-            TraversedToWest,
-            Backtracked,
-            NoState
-        };
+        MazeConsts MC = new MazeConsts();
+        MazeSolver M = new MazeSolver();
+        
+        private List<Button> btnList = new List<Button>();
 
-        public enum dir
+        public frmMazeSolver()
         {
-            North,
-            South,
-            West,
-            East,
-            NA
-        };
+            InitializeComponent();
 
-        public MazeConsts MC;
-        public state[,] states { get; set; }
-        public List<IObserver> ObserverList;
-
-        public MazeSolver()
-        {
-            this.MC = new MazeConsts();
-        }
-
-        public MazeSolver(MazeConsts MC)
-        {
-            this.MC = MC;
-        }
-
-        /// <summary>
-        /// Observer Pattern Implement to Inform View About Change in State
-        /// </summary>
-        public void AttachObserver(IObserver observer)
-        {
-            this.ObserverList.Add(observer);
-        }
-        public void DetachObserver(IObserver observer)
-        {
-            int index = this.ObserverList.IndexOf(observer);
-            if (index >= 0)
-            {
-                ObserverList.Remove(observer);
-            }
-        }
-        public void NotifyObservers()
-        {
-            foreach (IObserver observer in ObserverList)
-                observer.notify();
-        }
-
-        /// <summary>
-        /// Generating Maze Operation Decoupled From View 
-        /// </summary>
-        public void GenerateMaze()
-        {
-            //Initialize a new state matrix
-            this.states = new state[MC.SIZE, MC.SIZE];
-
-            Random rand = new Random(DateTime.Now.Millisecond);
-
+            Font buttonFont = new Font("Arial", 8);
+            this.SuspendLayout();
             for (int rowIndex = 0; rowIndex < MC.SIZE; ++rowIndex)
                 for (int colIndex = 0; colIndex < MC.SIZE; ++colIndex)
                 {
-                    states[rowIndex, colIndex] = state.Blank;
-                    if ((rowIndex) * MC.SIZE + (colIndex) == MC.START_POS)
+                    Button btn = new Button();
+                    btn.Name = string.Format("btn{0}_{1}", rowIndex, colIndex);
+                    btn.Parent = pnlParent;
+                    btn.Location = new Point(colIndex * MC.SIZE,rowIndex * MC.SIZE);
+                    btn.Size = new Size(MC.SIZE, MC.SIZE);
+                    btn.Text = "";
+                    btn.Font = buttonFont.Clone() as Font;
+                    btn.Enabled = false;
+                    btnList.Add(btn);
+                }
+            this.ResumeLayout();
+        }
+
+        private void btnGenerate_Click(object sender, EventArgs e)
+        {
+            int pos = 0;
+            this.M.GenerateMaze();
+
+            for( int rowIndex = 0; rowIndex < MC.SIZE; ++ rowIndex )
+                for (int colIndex = 0; colIndex < MC.SIZE; ++colIndex)
+                {
+                    if (pos == MC.START_POS)
                     {
-                        states[rowIndex, colIndex] = state.Start;
+                        btnList[pos].Text = "S";
                     }
-                    else if ((rowIndex) * MC.SIZE + (colIndex) == MC.END_POS)
+
+                    else if (pos == MC.END_POS)
                     {
-                        states[rowIndex, colIndex] = state.End;
+                        btnList[pos].Text = "E";
                     }
+
                     else
                     {
-                        int num = rand.Next(3);
-                        if (num == 0)
+                        btnList[pos].Text = "";
+                        MazeSolver.state num = this.M.states[rowIndex,colIndex];
+                        if (num == MazeSolver.state.Hurdle)
                         {
-                            states[rowIndex, colIndex] = state.Hurdle;
+                            btnList[pos].BackColor = Color.Black;
                         }
                         else
                         {
-                            states[rowIndex, colIndex] = state.Blank;
+                            btnList[pos].BackColor = SystemColors.Control;
                         }
                     }
+                    pos++;
                 }
+            btnSolve.Enabled = true;
+            lblProgress.Text = "Generated";
         }
-
 
         //private state GetNextState(int currentPos, dir direction)
         //{
         //    // convert the current pos into row and col index;
-        //    int rowIndex = currentPos / this.MC.SIZE;
-        //    int colIndex = currentPos % this.MC.SIZE;
+        //    int rowIndex = currentPos / SIZE;
+        //    int colIndex = currentPos % SIZE;
         //    switch (direction)
         //    {
         //        case dir.East:
-        //            if (colIndex == this.MC.SIZE - 1)
+        //            if (colIndex == SIZE - 1)
         //                return state.NoState;
         //            colIndex++;
         //            break;
@@ -127,32 +99,32 @@ namespace Assignment3
         //            rowIndex--;
         //            break;
         //        case dir.South:
-        //            if (rowIndex == this.MC.SIZE - 1)
+        //            if (rowIndex == SIZE - 1)
         //                return state.NoState;
         //            rowIndex++;
         //            break;
         //        default:
         //            return state.NoState;
         //    }
-        //    return states[rowIndex, colIndex];
+        //    return states[rowIndex,colIndex];
         //}
 
-        //public int GetPos(int currentPos, dir direction)
+        //int GetPos(int currentPos, dir direction)
         //{
         //    // convert the current pos into row and col index;
-        //    int rowIndex = currentPos / this.MC.SIZE;
-        //    int colIndex = currentPos % this.MC.SIZE;
+        //    int rowIndex = currentPos / SIZE;
+        //    int colIndex = currentPos % SIZE;
 
         //    // no error checking here, assuming everything is OK
-        //    if (direction == dir.East) colIndex++;
-        //    if (direction == dir.West) colIndex--;
-        //    if (direction == dir.North) rowIndex--;
-        //    if (direction == dir.South) rowIndex++;
+        //    if ( direction == dir.East ) colIndex++;
+        //    if ( direction == dir.West) colIndex--;
+        //    if ( direction == dir.North) rowIndex--;
+        //    if ( direction == dir.South ) rowIndex++;
 
-        //    return (rowIndex * this.MC.SIZE + colIndex);
+        //    return (rowIndex * SIZE + colIndex);
         //}
 
-        //public int GetAvailablePos(int currentPos, out dir direction)
+        //int GetAvailablePos(int currentPos, out dir direction)
         //{
         //    // move right
         //    direction = dir.East;
@@ -165,7 +137,7 @@ namespace Assignment3
         //    state downState = GetNextState(currentPos, direction);
         //    if (downState == state.Blank || downState == state.End)
         //        return GetPos(currentPos, direction);
-
+            
         //    // move left
         //    direction = dir.West;
         //    state leftState = GetNextState(currentPos, direction);
@@ -196,12 +168,12 @@ namespace Assignment3
         //    return -1;
         //}
 
-        //public void ShowState(int position, state newState)
+        //void ShowState(int position, state newState)
         //{
         //    Button btn = btnList[position];
         //    switch (newState)
         //    {
-        //        case state.Backtracked:
+        //        case state.Backtracked: 
         //            btn.BackColor = SystemColors.ControlDark;
         //            btn.Text = "B";
         //            break;
@@ -223,17 +195,17 @@ namespace Assignment3
         //    Thread.Sleep(200);
         //}
 
-        //public void SetState(int position, state newState)
+        //void SetState(int position, state newState)
         //{
         //    // convert the current pos into row and col index;
-        //    int rowIndex = position / this.MC.SIZE;
-        //    int colIndex = position % this.MC.SIZE;
+        //    int rowIndex = position / SIZE;
+        //    int colIndex = position % SIZE;
 
         //    states[rowIndex, colIndex] = newState;
         //    ShowState(position, newState);
         //}
 
-        //public state GetStateFromDirection(dir direction)
+        //state GetStateFromDirection(dir direction)
         //{
         //    switch (direction)
         //    {
@@ -245,10 +217,10 @@ namespace Assignment3
         //    return state.NoState;
         //}
 
-        //public void MoveNextPos(int currentPos, int nextPos, dir direction)
+        //void MoveNextPos(int currentPos, int nextPos, dir direction)
         //{
-        //    state currentState = states[currentPos / this.MC.SIZE, currentPos % this.MC.SIZE];
-        //    state nextState = states[nextPos / this.MC.SIZE, nextPos % this.MC.SIZE];
+        //    state currentState = states[currentPos / SIZE, currentPos % SIZE];
+        //    state nextState = states[nextPos / SIZE, nextPos % SIZE];
 
         //    if (nextState == state.Blank || nextState == state.End)
         //    {
@@ -259,9 +231,32 @@ namespace Assignment3
         //        SetState(currentPos, state.Backtracked);
         //}
 
-        public void SolveMaze()
+        private void btnSolve_Click(object sender, EventArgs e)
         {
+            //lblProgress.Text = "Solving...";
+            ////Application.DoEvents();
+            //int currentPos = START_POS;
+            //while (currentPos != END_POS)
+            //{
+            //    //SetState(currentPos, state.Traversed);
+            //    dir direction = dir.NA;
+            //    int nextPos = GetAvailablePos(currentPos, out direction );
+            //    if (nextPos == -1)
+            //    {
+            //        lblProgress.Text = "No solution!";
+            //        MessageBox.Show("No solution!");
+            //        break;
+            //    }
+            //    MoveNextPos(currentPos, nextPos, direction);
+            //    currentPos = nextPos;
+            //}
 
+            //if (currentPos == END_POS)
+            //{
+            //    lblProgress.Text = "Solved!";
+            //    MessageBox.Show("Solved!");
+            //}
+            //btnSolve.Enabled = false;
         }
     }
 }

@@ -70,16 +70,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MazeSolver.cs">
+    <Compile Include="GUIView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MazeSolver.Designer.cs">
-      <DependentUpon>MazeSolver.cs</DependentUpon>
+    <Compile Include="GUIView.Designer.cs">
+      <DependentUpon>GUIView.cs</DependentUpon>
     </Compile>
+    <Compile Include="ISubject.cs" />
+    <Compile Include="MazeConsts.cs" />
+    <Compile Include="MazeController.cs" />
+    <Compile Include="MazeSolver.cs" />
+    <Compile Include="MazeSolvingBehavior.cs" />
+    <Compile Include="IObserver.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="MazeSolver.resx">
-      <DependentUpon>MazeSolver.cs</DependentUpon>
+    <EmbeddedResource Include="GUIView.resx">
+      <DependentUpon>GUIView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
