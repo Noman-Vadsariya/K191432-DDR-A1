@@ -31,6 +31,18 @@ namespace Assignment3
             NA
         };
 
+        public class NextStep
+        {
+            public MazeSolver.state newstate;
+            public int nextPos;
+
+            public NextStep(MazeSolver.state newstate, int nextPos)
+            {
+                this.newstate = newstate;
+                this.nextPos = nextPos;
+            }
+        }
+
         public int SIZE { get; set; }
         public int START_POS { get; set; }
         public int END_POS { get; set; }

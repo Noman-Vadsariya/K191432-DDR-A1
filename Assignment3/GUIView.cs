@@ -103,42 +103,6 @@ namespace Assignment3
             Thread.Sleep(200);
         }
 
-        void SetState(int position, MazeSolver.state newState)
-        {
-            // convert the current pos into row and col index;
-            int rowIndex = position / MC.SIZE;
-            int colIndex = position % MC.SIZE;
-
-            this.M.states[rowIndex, colIndex] = newState;
-            ShowState(position, newState);
-        }
-
-        MazeSolver.state GetStateFromDirection(MazeSolver.dir direction)
-        {
-            switch (direction)
-            {
-                case MazeSolver.dir.East: return MazeSolver.state.TraversedToEast;
-                case MazeSolver.dir.West: return MazeSolver.state.TraversedToWest;
-                case MazeSolver.dir.North: return MazeSolver.state.TraversedToNorth;
-                case MazeSolver.dir.South: return MazeSolver.state.TraversedToSouth;
-            }
-            return MazeSolver.state.NoState;
-        }
-
-        void MoveNextPos(int currentPos, int nextPos, MazeSolver.dir direction)
-        {
-            MazeSolver.state currentState = this.M.states[currentPos / MC.SIZE, currentPos % MC.SIZE];
-            MazeSolver.state nextState = this.M.states[nextPos / MC.SIZE, nextPos % MC.SIZE];
-
-            if (nextState == MazeSolver.state.Blank || nextState == MazeSolver.state.End)
-            {
-                SetState(currentPos, GetStateFromDirection(direction));
-            }
-            if (nextState == MazeSolver.state.TraversedToNorth || nextState == MazeSolver.state.TraversedToSouth
-                || nextState == MazeSolver.state.TraversedToEast || nextState == MazeSolver.state.TraversedToWest)
-                SetState(currentPos, MazeSolver.state.Backtracked);
-        }
-
         private void btnSolve_Click(object sender, EventArgs e)
         {
             lblProgress.Text = "Solving...";
@@ -146,16 +110,17 @@ namespace Assignment3
             int currentPos = MC.START_POS;
             while (currentPos != MC.END_POS)
             {
-                MazeSolver.dir direction = MazeSolver.dir.NA;
-                int nextPos = M.GetAvailablePos(currentPos, out direction);
-                if (nextPos == -1)
+                MazeConsts.NextStep ret = M.SolveMaze(currentPos);
+                //Console.WriteLine(ret.nextPos);
+                //Console.WriteLine(ret.newstate);
+                if (ret.nextPos == -1)
                 {
                     lblProgress.Text = "No solution!";
                     MessageBox.Show("No solution!");
                     break;
                 }
-                MoveNextPos(currentPos, nextPos, direction);
-                currentPos = nextPos;
+                currentPos = ret.nextPos;
+                this.ShowState(ret.nextPos, ret.newstate);
             }
 
             if (currentPos == MC.END_POS)
