@@ -5,8 +5,8 @@ using System.Text;
 
 namespace Assignment3
 {
-    interface MazeSolvingBehavior
+    public interface MazeSolvingBehavior
     {
-
+        int SolveMaze(int currentPos, MazeSolver.state[,] states, out MazeSolver.dir dir);
     }
 }

@@ -84,6 +84,7 @@
     <Compile Include="IObserver.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RecursiveSolver.cs" />
     <EmbeddedResource Include="GUIView.resx">
       <DependentUpon>GUIView.cs</DependentUpon>
     </EmbeddedResource>

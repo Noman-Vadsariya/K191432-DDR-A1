@@ -76,6 +76,11 @@ namespace Assignment3
             lblProgress.Text = "Generated";
         }
 
+        /// <summary>
+        /// Only one view function that updates the state of button
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="newState"></param>
         void ShowState(int position, MazeSolver.state newState)
         {
             Button btn = btnList[position];
