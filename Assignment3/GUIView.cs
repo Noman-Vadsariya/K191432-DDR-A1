@@ -111,8 +111,6 @@ namespace Assignment3
             while (currentPos != MC.END_POS)
             {
                 MazeConsts.NextStep ret = M.SolveMaze(currentPos);
-                //Console.WriteLine(ret.nextPos);
-                //Console.WriteLine(ret.newstate);
                 if (ret.nextPos == -1)
                 {
                     lblProgress.Text = "No solution!";
