@@ -36,16 +36,18 @@
             // 
             // pnlParent
             // 
-            this.pnlParent.Location = new System.Drawing.Point(12, 12);
+            this.pnlParent.Location = new System.Drawing.Point(16, 15);
+            this.pnlParent.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnlParent.Name = "pnlParent";
-            this.pnlParent.Size = new System.Drawing.Size(400, 400);
+            this.pnlParent.Size = new System.Drawing.Size(533, 492);
             this.pnlParent.TabIndex = 0;
             // 
             // btnGenerate
             // 
-            this.btnGenerate.Location = new System.Drawing.Point(429, 13);
+            this.btnGenerate.Location = new System.Drawing.Point(572, 16);
+            this.btnGenerate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnGenerate.Name = "btnGenerate";
-            this.btnGenerate.Size = new System.Drawing.Size(75, 23);
+            this.btnGenerate.Size = new System.Drawing.Size(100, 28);
             this.btnGenerate.TabIndex = 1;
             this.btnGenerate.Text = "Generate";
             this.btnGenerate.UseVisualStyleBackColor = true;
@@ -53,9 +55,10 @@
             // 
             // btnSolve
             // 
-            this.btnSolve.Location = new System.Drawing.Point(429, 42);
+            this.btnSolve.Location = new System.Drawing.Point(572, 52);
+            this.btnSolve.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnSolve.Name = "btnSolve";
-            this.btnSolve.Size = new System.Drawing.Size(75, 23);
+            this.btnSolve.Size = new System.Drawing.Size(100, 28);
             this.btnSolve.TabIndex = 2;
             this.btnSolve.Text = "Solve";
             this.btnSolve.UseVisualStyleBackColor = true;
@@ -63,20 +66,22 @@
             // 
             // lblProgress
             // 
-            this.lblProgress.Location = new System.Drawing.Point(429, 83);
+            this.lblProgress.Location = new System.Drawing.Point(572, 102);
+            this.lblProgress.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblProgress.Name = "lblProgress";
-            this.lblProgress.Size = new System.Drawing.Size(73, 51);
+            this.lblProgress.Size = new System.Drawing.Size(97, 63);
             this.lblProgress.TabIndex = 3;
             // 
             // frmMazeSolver
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(514, 425);
+            this.ClientSize = new System.Drawing.Size(685, 523);
             this.Controls.Add(this.lblProgress);
             this.Controls.Add(this.btnSolve);
             this.Controls.Add(this.btnGenerate);
             this.Controls.Add(this.pnlParent);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "frmMazeSolver";
             this.Text = "Maze Solver";
             this.ResumeLayout(false);
