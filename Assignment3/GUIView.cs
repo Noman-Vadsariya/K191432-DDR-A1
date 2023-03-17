@@ -12,14 +12,16 @@ namespace Assignment3
 {
     public partial class frmMazeSolver : Form
     {
-        MazeConsts MC = new MazeConsts();
-        MazeSolver M = new MazeSolver();
+        MazeConsts MC = new MazeConsts(20,0,399);
+        MazeSolver M;
         
         private List<Button> btnList = new List<Button>();
 
         public frmMazeSolver()
         {
             InitializeComponent();
+            btnSolve.Enabled = false;
+            cmbSolvingBehavior.Enabled = false;
 
             Font buttonFont = new Font("Arial", 8);
             this.SuspendLayout();
@@ -42,6 +44,7 @@ namespace Assignment3
         private void btnGenerate_Click(object sender, EventArgs e)
         {
             int pos = 0;
+            this.M = new MazeSolver(MC);
             this.M.GenerateMaze();
 
             for( int rowIndex = 0; rowIndex < MC.SIZE; ++ rowIndex )
@@ -73,6 +76,7 @@ namespace Assignment3
                     pos++;
                 }
             btnSolve.Enabled = true;
+            cmbSolvingBehavior.Enabled = true;
             lblProgress.Text = "Generated";
         }
 
@@ -110,6 +114,14 @@ namespace Assignment3
 
         private void btnSolve_Click(object sender, EventArgs e)
         {
+            //Set Maze Solving Behavior Dynamically
+            if (cmbSolvingBehavior.SelectedIndex == 0)
+                M.SetSolverBehavior(new RecursiveSolver(MC));
+            else if (cmbSolvingBehavior.SelectedIndex == 0)
+                M.SetSolverBehavior(new ShortestPath(MC));
+
+            //Using Selected Solver to Solve Maze
+            btnGenerate.Enabled = false;
             lblProgress.Text = "Solving...";
             Application.DoEvents();
             int currentPos = MC.START_POS;
@@ -118,7 +130,7 @@ namespace Assignment3
                 MazeConsts.NextStep ret = M.SolveMaze(currentPos);
                 if (ret.nextPos == -1)
                 {
-                    lblProgress.Text = "No solution!";
+                    lblProgress.Text = "No Solution!";
                     MessageBox.Show("No solution!");
                     break;
                 }
@@ -128,10 +140,17 @@ namespace Assignment3
 
             if (currentPos == MC.END_POS)
             {
-                lblProgress.Text = "Solved!";
+                lblProgress.Text = "Maze Solved!";
                 MessageBox.Show("Solved!");
             }
             btnSolve.Enabled = false;
+            cmbSolvingBehavior.Enabled = true;
+            btnGenerate.Enabled = true;
         }
+
+        private void frmMazeSolver_Load(object sender, EventArgs e)
+        {
+
         }
+    }
 }
