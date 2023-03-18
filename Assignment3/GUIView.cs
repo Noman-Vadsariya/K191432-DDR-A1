@@ -21,7 +21,9 @@ namespace Assignment3
         {
             InitializeComponent();
             btnSolve.Enabled = false;
+            cmbSolvingBehavior.SelectedIndex = 0;
             cmbSolvingBehavior.Enabled = false;
+
 
             Font buttonFont = new Font("Arial", 8);
             this.SuspendLayout();
@@ -144,7 +146,7 @@ namespace Assignment3
                 MessageBox.Show("Solved!");
             }
             btnSolve.Enabled = false;
-            cmbSolvingBehavior.Enabled = true;
+            cmbSolvingBehavior.Enabled = false;
             btnGenerate.Enabled = true;
         }
 
