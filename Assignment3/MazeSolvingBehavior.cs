@@ -7,6 +7,6 @@ namespace Assignment3
 {
     public interface MazeSolvingBehavior
     {
-        int SolveMaze(int currentPos, MazeSolver.state[,] states, out MazeSolver.dir dir);
+        int SolveMaze(int currentPos, MazeConsts.state[,] states, out MazeConsts.dir dir);
     }
 }

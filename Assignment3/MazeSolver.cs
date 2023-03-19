@@ -7,32 +7,8 @@ namespace Assignment3
 {
     public class MazeSolver
     {
-        public enum state
-        {
-            Start,
-            End,
-            Blank,
-            Hurdle,
-            //Traversed,
-            TraversedToSouth,
-            TraversedToNorth,   
-            TraversedToEast,
-            TraversedToWest,
-            Backtracked,
-            NoState
-        };
-
-        public enum dir
-        {
-            North,
-            South,
-            West,
-            East,
-            NA
-        };
-
         public MazeConsts MC;
-        public state[,] states { get; set; }
+        public MazeConsts.state[,] states { get; set; }
         public List<IObserver> ObserverList;
 
         /// <summary>
@@ -66,7 +42,7 @@ namespace Assignment3
         }
 
         /// <summary>
-        /// Observer Pattern Implement to Inform View About Change in State
+        /// Observer Pattern Implement to Inform View About Change in MazeConsts.state
         /// </summary>
         public void AttachObserver(IObserver observer)
         {
@@ -91,39 +67,39 @@ namespace Assignment3
         /// </summary>
         public void GenerateMaze()
         {
-            //Initialize a new state matrix
-            this.states = new state[MC.SIZE, MC.SIZE];
+            //Initialize a new MazeConsts.state matrix
+            this.states = new MazeConsts.state[MC.SIZE, MC.SIZE];
 
             Random rand = new Random(DateTime.Now.Millisecond);
 
             for (int rowIndex = 0; rowIndex < MC.SIZE; ++rowIndex)
                 for (int colIndex = 0; colIndex < MC.SIZE; ++colIndex)
                 {
-                    states[rowIndex, colIndex] = state.Blank;
+                    states[rowIndex, colIndex] = MazeConsts.state.Blank;
                     if ((rowIndex) * MC.SIZE + (colIndex) == MC.START_POS)
                     {
-                        states[rowIndex, colIndex] = state.Start;
+                        states[rowIndex, colIndex] = MazeConsts.state.Start;
                     }
                     else if ((rowIndex) * MC.SIZE + (colIndex) == MC.END_POS)
                     {
-                        states[rowIndex, colIndex] = state.End;
+                        states[rowIndex, colIndex] = MazeConsts.state.End;
                     }
                     else
                     {
                         int num = rand.Next(3);
                         if (num == 0)
                         {
-                            states[rowIndex, colIndex] = state.Hurdle;
+                            states[rowIndex, colIndex] = MazeConsts.state.Hurdle;
                         }
                         else
                         {
-                            states[rowIndex, colIndex] = state.Blank;
+                            states[rowIndex, colIndex] = MazeConsts.state.Blank;
                         }
                     }
                 }
         }
 
-        state SetState(int position, MazeSolver.state newState)
+        MazeConsts.state SetState(int position, MazeConsts.state newState)
         {
             // convert the current pos into row and col index;
             int rowIndex = position / MC.SIZE;
@@ -133,45 +109,45 @@ namespace Assignment3
             return newState;
         }
 
-        MazeSolver.state GetStateFromDirection(MazeSolver.dir direction)
+        MazeConsts.state GetStateFromDirection(MazeConsts.dir direction)
         {
             switch (direction)
             {
-                case MazeSolver.dir.East: return MazeSolver.state.TraversedToEast;
-                case MazeSolver.dir.West: return MazeSolver.state.TraversedToWest;
-                case MazeSolver.dir.North: return MazeSolver.state.TraversedToNorth;
-                case MazeSolver.dir.South: return MazeSolver.state.TraversedToSouth;
+                case MazeConsts.dir.East: return MazeConsts.state.TraversedToEast;
+                case MazeConsts.dir.West: return MazeConsts.state.TraversedToWest;
+                case MazeConsts.dir.North: return MazeConsts.state.TraversedToNorth;
+                case MazeConsts.dir.South: return MazeConsts.state.TraversedToSouth;
             }
-            return MazeSolver.state.NoState;
+            return MazeConsts.state.NoState;
         }
 
-        state MoveNextPos(int currentPos, int nextPos, MazeSolver.dir direction)
+        MazeConsts.state MoveNextPos(int currentPos, int nextPos, MazeConsts.dir direction)
         {
-            MazeSolver.state currentState = this.states[currentPos / MC.SIZE, currentPos % MC.SIZE];
-            MazeSolver.state nextState = this.states[nextPos / MC.SIZE, nextPos % MC.SIZE];
+            MazeConsts.state currentState = this.states[currentPos / MC.SIZE, currentPos % MC.SIZE];
+            MazeConsts.state nextState = this.states[nextPos / MC.SIZE, nextPos % MC.SIZE];
 
-            if (nextState == MazeSolver.state.Blank || nextState == MazeSolver.state.End)
+            if (nextState == MazeConsts.state.Blank || nextState == MazeConsts.state.End)
             {
                 return SetState(currentPos, GetStateFromDirection(direction));
             }
-            else if (nextState == MazeSolver.state.TraversedToNorth || nextState == MazeSolver.state.TraversedToSouth
-                || nextState == MazeSolver.state.TraversedToEast || nextState == MazeSolver.state.TraversedToWest)
-                return SetState(currentPos, MazeSolver.state.Backtracked);
+            else if (nextState == MazeConsts.state.TraversedToNorth || nextState == MazeConsts.state.TraversedToSouth
+                || nextState == MazeConsts.state.TraversedToEast || nextState == MazeConsts.state.TraversedToWest)
+                return SetState(currentPos, MazeConsts.state.Backtracked);
             else
-                return state.NoState;
+                return MazeConsts.state.NoState;
         }
 
         public MazeConsts.NextStep SolveMaze(int currentPos)
         {
-            dir direction = dir.NA;
+            MazeConsts.dir direction = MazeConsts.dir.NA;
             Console.WriteLine(currentPos);
             int nextPos = this.solver.SolveMaze(currentPos, this.states, out direction);
 
             if (nextPos == -1)
-                return new MazeConsts.NextStep(state.NoState, -1);
+                return new MazeConsts.NextStep(MazeConsts.state.NoState, -1);
             
             
-            state newState = MoveNextPos(currentPos, nextPos, direction);
+            MazeConsts.state newState = MoveNextPos(currentPos, nextPos, direction);
             return new MazeConsts.NextStep(newState, nextPos);
         }
     }

@@ -75,11 +75,11 @@
             // 
             // lblProgress
             // 
-            this.lblProgress.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProgress.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblProgress.Location = new System.Drawing.Point(580, 402);
             this.lblProgress.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblProgress.Name = "lblProgress";
-            this.lblProgress.Size = new System.Drawing.Size(315, 63);
+            this.lblProgress.Size = new System.Drawing.Size(315, 93);
             this.lblProgress.TabIndex = 3;
             // 
             // cmbSolvingBehavior

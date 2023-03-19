@@ -33,10 +33,10 @@ namespace Assignment3
 
         public class NextStep
         {
-            public MazeSolver.state newstate;
+            public MazeConsts.state newstate;
             public int nextPos;
 
-            public NextStep(MazeSolver.state newstate, int nextPos)
+            public NextStep(MazeConsts.state newstate, int nextPos)
             {
                 this.newstate = newstate;
                 this.nextPos = nextPos;

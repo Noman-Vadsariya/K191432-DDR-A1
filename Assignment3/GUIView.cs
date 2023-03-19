@@ -65,8 +65,8 @@ namespace Assignment3
                     else
                     {
                         btnList[pos].Text = "";
-                        MazeSolver.state num = this.M.states[rowIndex,colIndex];
-                        if (num == MazeSolver.state.Hurdle)
+                        MazeConsts.state num = this.M.states[rowIndex,colIndex];
+                        if (num == MazeConsts.state.Hurdle)
                         {
                             btnList[pos].BackColor = Color.Black;
                         }
@@ -79,7 +79,7 @@ namespace Assignment3
                 }
             btnSolve.Enabled = true;
             cmbSolvingBehavior.Enabled = true;
-            lblProgress.Text = "Generated";
+            lblProgress.Text = "Maze Generated";
         }
 
         /// <summary>
@@ -87,25 +87,25 @@ namespace Assignment3
         /// </summary>
         /// <param name="position"></param>
         /// <param name="newState"></param>
-        void ShowState(int position, MazeSolver.state newState)
+        void ShowState(int position, MazeConsts.state newState)
         {
             Button btn = btnList[position];
             switch (newState)
             {
-                case MazeSolver.state.Backtracked:
+                case MazeConsts.state.Backtracked:
                     btn.BackColor = SystemColors.ControlDark;
                     btn.Text = "B";
                     break;
-                case MazeSolver.state.TraversedToEast:
+                case MazeConsts.state.TraversedToEast:
                     btn.Text = "\u2192";
                     break;
-                case MazeSolver.state.TraversedToWest:
+                case MazeConsts.state.TraversedToWest:
                     btn.Text = "\u2190";
                     break;
-                case MazeSolver.state.TraversedToNorth:
+                case MazeConsts.state.TraversedToNorth:
                     btn.Text = "\u2191";
                     break;
-                case MazeSolver.state.TraversedToSouth:
+                case MazeConsts.state.TraversedToSouth:
                     btn.Text = "\u2193";
                     break;
             }
@@ -122,9 +122,12 @@ namespace Assignment3
             else if (cmbSolvingBehavior.SelectedIndex == 0)
                 M.SetSolverBehavior(new ShortestPath(MC));
 
-            //Using Selected Solver to Solve Maze
             btnGenerate.Enabled = false;
-            lblProgress.Text = "Solving...";
+            btnSolve.Enabled = false;
+            cmbSolvingBehavior.Enabled = false;
+
+            //Using Dynamically Selected Solving Algorithm to Solve Maze
+            lblProgress.Text = "Solving Maze using \n" + cmbSolvingBehavior.SelectedItem;
             Application.DoEvents();
             int currentPos = MC.START_POS;
             while (currentPos != MC.END_POS)
@@ -145,8 +148,6 @@ namespace Assignment3
                 lblProgress.Text = "Maze Solved!";
                 MessageBox.Show("Solved!");
             }
-            btnSolve.Enabled = false;
-            cmbSolvingBehavior.Enabled = false;
             btnGenerate.Enabled = true;
         }
 
