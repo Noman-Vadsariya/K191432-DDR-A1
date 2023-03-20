@@ -5,6 +5,11 @@ using System.Text;
 
 namespace Assignment3
 {
+    /// <summary>
+    /// Code Smell : Data Clumps
+    /// Refactoring : Same data items are used across multiple classes so using
+    /// "Extract Class" to put these data items in a class and turn them into an object.
+    /// </summary>
     public class MazeConsts
     {
         public enum state

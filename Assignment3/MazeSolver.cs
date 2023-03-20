@@ -11,31 +11,30 @@ namespace Assignment3
         public MazeConsts.state[,] states { get; set; }
         public List<IObserver> ObserverList;
 
-        /// <summary>
-        /// Strategy Pattern 
-        /// </summary>
-        MazeSolvingBehavior solver { get; set; } 
+
+        //Strategy Pattern Implementation : Agggregation
+        MazeSolvingBehavior solver; 
 
         public MazeSolver()
         {
             this.MC = new MazeConsts();
             this.solver = new RecursiveSolver(MC);
-            //this.solver = new ShortestPath(MC);
         }
 
         public MazeSolver(MazeConsts MC)
         {
             this.MC = MC;
             this.solver = new RecursiveSolver(MC);
-            //this.solver = new ShortestPath(MC);
         }
 
+        // Constructor Injection
         public MazeSolver(MazeConsts MC, MazeSolvingBehavior solver)
         {
             this.MC = MC;
             this.solver = solver;
         }
 
+        // Method Injection
         public void SetSolverBehavior(MazeSolvingBehavior solver)
         {
             this.solver = solver;

@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Assignment3
 {
+    /// <summary>
+    /// Using Backtracking approach for Solving Maze 
+    /// </summary>
     public class RecursiveSolver: MazeSolvingBehavior
     {
         public MazeConsts MC;

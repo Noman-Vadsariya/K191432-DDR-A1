@@ -5,32 +5,35 @@ using System.Text;
 
 namespace Assignment3
 {
+    /// <summary>
+    ///  The path found by breadth first search to any node 
+    ///  is the shortest path to that node from starting point
+    ///  in an unweighted graph
+    /// </summary>
     class ShortestPath : MazeSolvingBehavior
     {
         public MazeConsts MC;
-        Stack<int> Frontier;
+        Queue<int> Frontier;
         Queue<int> Visited;
 
         public ShortestPath()
         {
             this.MC = new MazeConsts();
 
-            this.Frontier = new Stack<int>();  //Declaring Frontier Queue for Explored Nodes
-            this.Frontier.Push(MC.START_POS);
+            this.Frontier = new Queue<int>();       //Declaring Frontier Queue for Explored Nodes
+            this.Frontier.Enqueue(MC.START_POS);
 
-            this.Visited = new Queue<int>();   //Declaring Visited Queue for Visited Nodes
-            this.Visited.Enqueue(MC.START_POS);
+            this.Visited = new Queue<int>();        //Declaring Visited Queue for Visited Nodes
         }
 
         public ShortestPath(MazeConsts MC)
         {
             this.MC = MC;
 
-            this.Frontier = new Stack<int>();  //Declaring Frontier Queue for Explored Nodes
-            this.Frontier.Push(MC.START_POS);  
+            this.Frontier = new Queue<int>();       //Declaring Frontier Queue for Explored Nodes
+            this.Frontier.Enqueue(MC.START_POS);
 
-            this.Visited = new Queue<int>();   //Declaring Visited Queue for Visited Nodes
-            this.Visited.Enqueue(MC.START_POS);
+            this.Visited = new Queue<int>();        //Declaring Visited Queue for Visited Nodes
         }
 
         public int GetPos(int currentPos, MazeConsts.dir direction)
@@ -81,90 +84,98 @@ namespace Assignment3
             return states[rowIndex, colIndex];
         }
 
+        /// <summary>
+        /// Breadth First Search Algorithm implemented for Finding Shortest Path
+        /// </summary>
+        /// <param name="states"></param>
+        /// <param name="direction"></param>
+        /// <returns></returns>
         public int GetAvailablePos(MazeConsts.state[,] states, out MazeConsts.dir direction)
         {
             int currentPos;
-            MazeConsts.dir TrueDir = MazeConsts.dir.NA;
+            MazeConsts.dir nextDir = MazeConsts.dir.NA;
+            direction = MazeConsts.dir.NA;
 
             while (true)
             {
                 int count = this.Frontier.Count;
                 if (count == 0)
                 {
-                    Console.WriteLine(count);
-                    Console.WriteLine("No Solution");
                     direction = MazeConsts.dir.NA;
                     return -1;
                 }
-                currentPos = this.Frontier.Pop();
-                bool flag = true;
+
+                currentPos = this.Frontier.Dequeue();
+
+                if (this.Visited.Contains(currentPos)) //node is already visited so skip it.
+                    continue;
+
+                this.Visited.Enqueue(currentPos);
+                Console.WriteLine(currentPos);
+                bool flag = false;
 
                 // move right
-                direction = MazeConsts.dir.East;
-                MazeConsts.state rightState = GetNextState(currentPos, states, direction);
+                nextDir = MazeConsts.dir.East;
+                MazeConsts.state rightState = GetNextState(currentPos, states, nextDir);
                 if (rightState == MazeConsts.state.Blank || rightState == MazeConsts.state.End)
                 {
-                    int nextPos = GetPos(currentPos, direction);
-                    if (!this.Visited.Contains(nextPos))
-                    {
-                        TrueDir = direction;
-                        flag = false;
-                        this.Frontier.Push(nextPos);
-                        this.Visited.Enqueue(nextPos);
-                    }
+                    int nextPos = GetPos(currentPos, nextDir);
+                    this.Frontier.Enqueue(nextPos);
+                    flag = true;
+                    direction = MazeConsts.dir.East;
                 }
+
                 // move down
-                direction = MazeConsts.dir.South;
-                MazeConsts.state downState = GetNextState(currentPos, states, direction);
+                nextDir = MazeConsts.dir.South;
+                MazeConsts.state downState = GetNextState(currentPos, states, nextDir);
                 if (downState == MazeConsts.state.Blank || downState == MazeConsts.state.End)
                 {
-                    int nextPos = GetPos(currentPos, direction);
-                    if (!this.Visited.Contains(nextPos))
+                    int nextPos = GetPos(currentPos, nextDir);
+                    this.Frontier.Enqueue(nextPos);
+
+                    if (!flag)  // if nextDir is not set already then do it.
                     {
-                        TrueDir = direction;
-                        flag = false;
-                        this.Frontier.Push(nextPos);
-                        this.Visited.Enqueue(nextPos);
+                        flag = true;
+                        direction = MazeConsts.dir.South;
                     }
                 }
 
                 // move left
-                direction = MazeConsts.dir.West;
-                MazeConsts.state leftState = GetNextState(currentPos, states, direction);
+                nextDir = MazeConsts.dir.West;
+                MazeConsts.state leftState = GetNextState(currentPos, states, nextDir);
                 if (leftState == MazeConsts.state.Blank || leftState == MazeConsts.state.End)
                 {
-                    int nextPos = GetPos(currentPos, direction);
-                    if (!this.Visited.Contains(nextPos))
+                    int nextPos = GetPos(currentPos, nextDir);
+                    this.Frontier.Enqueue(nextPos);
+
+                    if (!flag)  // if nextDir is not set already then do it.
                     {
-                        TrueDir = direction;
-                        flag = false;
-                        this.Frontier.Push(nextPos);
-                        this.Visited.Enqueue(nextPos);
+                        flag = true;
+                        direction = MazeConsts.dir.West;
                     }
                 }
 
                 // move up
-                direction = MazeConsts.dir.North;
-                MazeConsts.state upState = GetNextState(currentPos, states, direction);
+                nextDir = MazeConsts.dir.North;
+                MazeConsts.state upState = GetNextState(currentPos, states, nextDir);
                 if (upState == MazeConsts.state.Blank || upState == MazeConsts.state.End)
                 {
-                    int nextPos = GetPos(currentPos, direction);
-                    if (!this.Visited.Contains(nextPos))
+                    int nextPos = GetPos(currentPos, nextDir);
+                    this.Frontier.Enqueue(nextPos);
+
+                    if (!flag)  // if nextDir is not set already then do it.
                     {
-                        TrueDir = direction;
-                        flag = false;
-                        this.Frontier.Push(nextPos);
-                        this.Visited.Enqueue(nextPos);
+                        flag = true;
+                        direction = MazeConsts.dir.North;
                     }
                 }
 
-
-                if (!flag)
+                if (flag)
                 {
-                    direction = TrueDir;
-                    return GetPos(currentPos, TrueDir); ;
+                    return GetPos(currentPos, direction);
                 }
-            }
+
+            } //while
         }
 
         public int SolveMaze(int currentPos, MazeConsts.state[,] states, out MazeConsts.dir direction)
