@@ -11,7 +11,7 @@ namespace Assignment3
 
         public RecursiveSolver()
         {
-
+            this.MC = new MazeConsts();
         }
 
         public RecursiveSolver(MazeConsts MC)
@@ -58,7 +58,7 @@ namespace Assignment3
             int rowIndex = currentPos / this.MC.SIZE;
             int colIndex = currentPos % this.MC.SIZE;
 
-            // no error checking here, assuming everything is OK
+            //change position based on next direction
             if (direction == MazeConsts.dir.East) colIndex++;
             if (direction == MazeConsts.dir.West) colIndex--;
             if (direction == MazeConsts.dir.North) rowIndex--;
@@ -93,6 +93,7 @@ namespace Assignment3
             if (upState == MazeConsts.state.Blank || upState == MazeConsts.state.End)
                 return GetPos(currentPos, direction);
 
+            //Backtracking
             // if no blanks look for traversed states, if there is any, to backtrack
             direction = MazeConsts.dir.East;
             if (rightState == MazeConsts.state.TraversedToWest)

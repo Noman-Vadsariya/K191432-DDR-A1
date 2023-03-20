@@ -13,18 +13,24 @@ namespace Assignment3
 
         public ShortestPath()
         {
+            this.MC = new MazeConsts();
 
+            this.Frontier = new Stack<int>();  //Declaring Frontier Queue for Explored Nodes
+            this.Frontier.Push(MC.START_POS);
+
+            this.Visited = new Queue<int>();   //Declaring Visited Queue for Visited Nodes
+            this.Visited.Enqueue(MC.START_POS);
         }
+
         public ShortestPath(MazeConsts MC)
         {
             this.MC = MC;
-            this.Frontier = new Stack<int>();
-            this.Frontier.Push(MC.START_POS);  //Initializing Queue
 
-            this.Visited = new Queue<int>();
+            this.Frontier = new Stack<int>();  //Declaring Frontier Queue for Explored Nodes
+            this.Frontier.Push(MC.START_POS);  
+
+            this.Visited = new Queue<int>();   //Declaring Visited Queue for Visited Nodes
             this.Visited.Enqueue(MC.START_POS);
-
-            Console.WriteLine(Frontier.Peek());
         }
 
         public int GetPos(int currentPos, MazeConsts.dir direction)
