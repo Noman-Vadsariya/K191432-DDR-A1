@@ -1,4 +1,4 @@
-﻿namespace Assignment3
+﻿namespace K191432_DDR_A1
 {
     partial class frmMazeSolver
     {

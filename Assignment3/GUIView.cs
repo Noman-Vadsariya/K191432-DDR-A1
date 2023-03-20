@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 
-namespace Assignment3
+namespace K191432_DDR_A1
 {
     public partial class frmMazeSolver : Form
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Assignment3
+namespace K191432_DDR_A1
 {
     static class Program
     {

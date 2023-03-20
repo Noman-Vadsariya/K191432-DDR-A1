@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Assignment3
+namespace K191432_DDR_A1
 {
     /// <summary>
     ///  The path found by breadth first search to any node 

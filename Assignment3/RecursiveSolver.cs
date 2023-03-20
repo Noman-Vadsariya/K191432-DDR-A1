@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Assignment3
+namespace K191432_DDR_A1
 {
     /// <summary>
     /// Using Backtracking approach for Solving Maze 
