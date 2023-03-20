@@ -76,16 +76,13 @@
     <Compile Include="GUIView.Designer.cs">
       <DependentUpon>GUIView.cs</DependentUpon>
     </Compile>
-    <Compile Include="ISubject.cs" />
     <Compile Include="MazeConsts.cs" />
-    <Compile Include="MazeController.cs" />
     <Compile Include="MazeSolver.cs" />
     <Compile Include="MazeSolvingBehavior.cs" />
-    <Compile Include="IObserver.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecursiveSolver.cs" />
-    <Compile Include="ShortestPath.cs" />
+    <Compile Include="ShortestPathSolver.cs" />
     <EmbeddedResource Include="GUIView.resx">
       <DependentUpon>GUIView.cs</DependentUpon>
     </EmbeddedResource>

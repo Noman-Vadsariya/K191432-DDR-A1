@@ -10,13 +10,13 @@ namespace Assignment3
     ///  is the shortest path to that node from starting point
     ///  in an unweighted graph
     /// </summary>
-    class ShortestPath : MazeSolvingBehavior
+    class ShortestPathSolver : MazeSolvingBehavior
     {
         public MazeConsts MC;
         Queue<int> Frontier;
         Queue<int> Visited;
 
-        public ShortestPath()
+        public ShortestPathSolver()
         {
             this.MC = new MazeConsts();
 
@@ -26,7 +26,7 @@ namespace Assignment3
             this.Visited = new Queue<int>();        //Declaring Visited Queue for Visited Nodes
         }
 
-        public ShortestPath(MazeConsts MC)
+        public ShortestPathSolver(MazeConsts MC)
         {
             this.MC = MC;
 

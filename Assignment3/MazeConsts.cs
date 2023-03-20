@@ -18,7 +18,6 @@ namespace Assignment3
             End,
             Blank,
             Hurdle,
-            //Traversed,
             TraversedToSouth,
             TraversedToNorth,
             TraversedToEast,

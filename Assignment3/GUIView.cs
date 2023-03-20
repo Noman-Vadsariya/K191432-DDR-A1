@@ -120,7 +120,7 @@ namespace Assignment3
             if (cmbSolvingBehavior.SelectedIndex == 0)
                 M.SetSolverBehavior(new RecursiveSolver(MC));
             else if (cmbSolvingBehavior.SelectedIndex == 0)
-                M.SetSolverBehavior(new ShortestPath(MC));
+                M.SetSolverBehavior(new ShortestPathSolver(MC));
 
             btnGenerate.Enabled = false;
             btnSolve.Enabled = false;
@@ -149,11 +149,6 @@ namespace Assignment3
                 MessageBox.Show("Solved!");
             }
             btnGenerate.Enabled = true;
-        }
-
-        private void frmMazeSolver_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

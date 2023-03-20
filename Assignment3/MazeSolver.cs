@@ -9,8 +9,6 @@ namespace Assignment3
     {
         public MazeConsts MC;
         public MazeConsts.state[,] states { get; set; }
-        public List<IObserver> ObserverList;
-
 
         //Strategy Pattern Implementation : Agggregation
         MazeSolvingBehavior solver; 
@@ -38,27 +36,6 @@ namespace Assignment3
         public void SetSolverBehavior(MazeSolvingBehavior solver)
         {
             this.solver = solver;
-        }
-
-        /// <summary>
-        /// Observer Pattern Implement to Inform View About Change in MazeConsts.state
-        /// </summary>
-        public void AttachObserver(IObserver observer)
-        {
-            this.ObserverList.Add(observer);
-        }
-        public void DetachObserver(IObserver observer)
-        {
-            int index = this.ObserverList.IndexOf(observer);
-            if (index >= 0)
-            {
-                ObserverList.Remove(observer);
-            }
-        }
-        public void NotifyObservers()
-        {
-            foreach (IObserver observer in ObserverList)
-                observer.notify();
         }
 
         /// <summary>
