@@ -12,8 +12,8 @@ namespace K191432_DDR_A1
 {
     public partial class frmMazeSolver : Form
     {
-        MazeConsts MC = new MazeConsts(20,0,399);
-        MazeSolver M;
+        MazeConsts mazeconsts = new MazeConsts(20,0,399);
+        MazeSolver mazesolver;
         
         private List<Button> btnList = new List<Button>();
 
@@ -24,17 +24,16 @@ namespace K191432_DDR_A1
             cmbSolvingBehavior.SelectedIndex = 0;
             cmbSolvingBehavior.Enabled = false;
 
-
             Font buttonFont = new Font("Arial", 8);
             this.SuspendLayout();
-            for (int rowIndex = 0; rowIndex < MC.SIZE; ++rowIndex)
-                for (int colIndex = 0; colIndex < MC.SIZE; ++colIndex)
+            for (int rowIndex = 0; rowIndex < mazeconsts.SIZE; ++rowIndex)
+                for (int colIndex = 0; colIndex < mazeconsts.SIZE; ++colIndex)
                 {
                     Button btn = new Button();
                     btn.Name = string.Format("btn{0}_{1}", rowIndex, colIndex);
                     btn.Parent = pnlParent;
-                    btn.Location = new Point(colIndex * MC.SIZE,rowIndex * MC.SIZE);
-                    btn.Size = new Size(MC.SIZE, MC.SIZE);
+                    btn.Location = new Point(colIndex * mazeconsts.SIZE,rowIndex * mazeconsts.SIZE);
+                    btn.Size = new Size(mazeconsts.SIZE, mazeconsts.SIZE);
                     btn.Text = "";
                     btn.Font = buttonFont.Clone() as Font;
                     btn.Enabled = false;
@@ -46,18 +45,18 @@ namespace K191432_DDR_A1
         private void btnGenerate_Click(object sender, EventArgs e)
         {
             int pos = 0;
-            this.M = new MazeSolver(MC);
-            this.M.GenerateMaze();
+            this.mazesolver = new MazeSolver(mazeconsts);
+            this.mazesolver.GenerateMaze();
 
-            for( int rowIndex = 0; rowIndex < MC.SIZE; ++ rowIndex )
-                for (int colIndex = 0; colIndex < MC.SIZE; ++colIndex)
+            for( int rowIndex = 0; rowIndex < mazeconsts.SIZE; ++ rowIndex )
+                for (int colIndex = 0; colIndex < mazeconsts.SIZE; ++colIndex)
                 {
-                    if (pos == MC.START_POS)
+                    if (pos == mazeconsts.START_POS)
                     {
                         btnList[pos].Text = "S";
                     }
 
-                    else if (pos == MC.END_POS)
+                    else if (pos == mazeconsts.END_POS)
                     {
                         btnList[pos].Text = "E";
                     }
@@ -65,7 +64,7 @@ namespace K191432_DDR_A1
                     else
                     {
                         btnList[pos].Text = "";
-                        MazeConsts.state num = this.M.states[rowIndex,colIndex];
+                        MazeConsts.state num = this.mazesolver.states[rowIndex,colIndex];
                         if (num == MazeConsts.state.Hurdle)
                         {
                             btnList[pos].BackColor = Color.Black;
@@ -114,13 +113,19 @@ namespace K191432_DDR_A1
             Thread.Sleep(200);
         }
 
-        private void btnSolve_Click(object sender, EventArgs e)
+        void SetMazeSolverBehavior()
         {
             //Set Maze Solving Behavior Dynamically
             if (cmbSolvingBehavior.SelectedIndex == 0)
-                M.SetSolverBehavior(new RecursiveSolver(MC));
+                mazesolver.SetSolverBehavior(new RecursiveSolver(mazeconsts));
             else if (cmbSolvingBehavior.SelectedIndex == 0)
-                M.SetSolverBehavior(new ShortestPathSolver(MC));
+                mazesolver.SetSolverBehavior(new ShortestPathSolver(mazeconsts));
+        }
+
+        private void btnSolve_Click(object sender, EventArgs e)
+        {
+            
+            this.SetMazeSolverBehavior();
 
             btnGenerate.Enabled = false;
             btnSolve.Enabled = false;
@@ -129,10 +134,10 @@ namespace K191432_DDR_A1
             //Using Dynamically Selected Solving Algorithm to Solve Maze
             lblProgress.Text = "Solving Maze using \n" + cmbSolvingBehavior.SelectedItem;
             Application.DoEvents();
-            int currentPos = MC.START_POS;
-            while (currentPos != MC.END_POS)
+            int currentPos = mazeconsts.START_POS;
+            while (currentPos != mazeconsts.END_POS)
             {
-                MazeConsts.NextStep ret = M.SolveMaze(currentPos);
+                MazeConsts.NextStep ret = mazesolver.SolveMaze(currentPos);
                 if (ret.nextPos == -1)
                 {
                     lblProgress.Text = "No Solution!";
@@ -143,7 +148,7 @@ namespace K191432_DDR_A1
                 this.ShowState(ret.nextPos, ret.newstate);
             }
 
-            if (currentPos == MC.END_POS)
+            if (currentPos == mazeconsts.END_POS)
             {
                 lblProgress.Text = "Maze Solved!";
                 MessageBox.Show("Solved!");
