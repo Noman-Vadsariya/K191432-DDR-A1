@@ -35,6 +35,9 @@ namespace K191432_DDR_A1
             NA
         };
 
+        /// <summary>
+        /// Used for handling return data items.
+        /// </summary>
         public class NextStep
         {
             public MazeConsts.state newstate;

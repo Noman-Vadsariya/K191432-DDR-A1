@@ -19,20 +19,16 @@ namespace K191432_DDR_A1
         public ShortestPathSolver()
         {
             this.MC = new MazeConsts();
-
             this.Frontier = new Queue<int>();       //Declaring Frontier Queue for Explored Nodes
             this.Frontier.Enqueue(MC.START_POS);
-
             this.Visited = new Queue<int>();        //Declaring Visited Queue for Visited Nodes
         }
 
         public ShortestPathSolver(MazeConsts MC)
         {
             this.MC = MC;
-
             this.Frontier = new Queue<int>();       //Declaring Frontier Queue for Explored Nodes
             this.Frontier.Enqueue(MC.START_POS);
-
             this.Visited = new Queue<int>();        //Declaring Visited Queue for Visited Nodes
         }
 
@@ -85,11 +81,8 @@ namespace K191432_DDR_A1
         }
 
         /// <summary>
-        /// Breadth First Search Algorithm implemented for Finding Shortest Path
+        /// Breadth First Search Algorithm Implemented
         /// </summary>
-        /// <param name="states"></param>
-        /// <param name="direction"></param>
-        /// <returns></returns>
         public int GetAvailablePos(MazeConsts.state[,] states, out MazeConsts.dir direction)
         {
             int currentPos;
@@ -104,9 +97,7 @@ namespace K191432_DDR_A1
                     direction = MazeConsts.dir.NA;
                     return -1;
                 }
-
                 currentPos = this.Frontier.Dequeue();
-
                 if (this.Visited.Contains(currentPos)) //node is already visited so skip it.
                     continue;
 
@@ -124,7 +115,6 @@ namespace K191432_DDR_A1
                     flag = true;
                     direction = MazeConsts.dir.East;
                 }
-
                 // move down
                 nextDir = MazeConsts.dir.South;
                 MazeConsts.state downState = GetNextState(currentPos, states, nextDir);
@@ -133,13 +123,12 @@ namespace K191432_DDR_A1
                     int nextPos = GetPos(currentPos, nextDir);
                     this.Frontier.Enqueue(nextPos);
 
-                    if (!flag)  // if nextDir is not set already then do it.
+                    if (!flag)          //if nextDir is not set already then do it.
                     {
                         flag = true;
                         direction = MazeConsts.dir.South;
                     }
                 }
-
                 // move left
                 nextDir = MazeConsts.dir.West;
                 MazeConsts.state leftState = GetNextState(currentPos, states, nextDir);
@@ -148,13 +137,12 @@ namespace K191432_DDR_A1
                     int nextPos = GetPos(currentPos, nextDir);
                     this.Frontier.Enqueue(nextPos);
 
-                    if (!flag)  // if nextDir is not set already then do it.
+                    if (!flag)          //if nextDir is not set already then do it.
                     {
                         flag = true;
                         direction = MazeConsts.dir.West;
                     }
                 }
-
                 // move up
                 nextDir = MazeConsts.dir.North;
                 MazeConsts.state upState = GetNextState(currentPos, states, nextDir);
@@ -163,21 +151,18 @@ namespace K191432_DDR_A1
                     int nextPos = GetPos(currentPos, nextDir);
                     this.Frontier.Enqueue(nextPos);
 
-                    if (!flag)  // if nextDir is not set already then do it.
+                    if (!flag)          //if nextDir is not set already then do it.
                     {
                         flag = true;
                         direction = MazeConsts.dir.North;
                     }
                 }
-
                 if (flag)
-                {
                     return GetPos(currentPos, direction);
-                }
-
             } //while
         }
 
+        //Implementing Abstract Method
         public int SolveMaze(int currentPos, MazeConsts.state[,] states, out MazeConsts.dir direction)
         {
             return GetAvailablePos(states, out direction);

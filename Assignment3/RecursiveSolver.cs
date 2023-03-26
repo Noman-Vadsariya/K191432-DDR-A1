@@ -115,6 +115,7 @@ namespace K191432_DDR_A1
             return -1;
         }
 
+        //Implementing Abstract Method
         public int SolveMaze(int currentPos, MazeConsts.state[,] states, out MazeConsts.dir direction)
         {
             return GetAvailablePos(currentPos, states, out direction);

@@ -12,7 +12,7 @@ namespace K191432_DDR_A1
 {
     public partial class frmMazeSolver : Form
     {
-        MazeConsts mazeconsts = new MazeConsts(20,0,399);
+        MazeConsts mazeconsts;
         MazeSolver mazesolver;
         
         private List<Button> btnList = new List<Button>();
@@ -23,9 +23,12 @@ namespace K191432_DDR_A1
             btnSolve.Enabled = false;
             cmbSolvingBehavior.SelectedIndex = 0;
             cmbSolvingBehavior.Enabled = false;
-
             Font buttonFont = new Font("Arial", 8);
             this.SuspendLayout();
+
+            //Initializing maze constants
+            this.mazeconsts = new MazeConsts(20, 0, 399);
+
             for (int rowIndex = 0; rowIndex < mazeconsts.SIZE; ++rowIndex)
                 for (int colIndex = 0; colIndex < mazeconsts.SIZE; ++colIndex)
                 {
@@ -82,10 +85,8 @@ namespace K191432_DDR_A1
         }
 
         /// <summary>
-        /// Only one view function that updates the state of button
+        /// Only one view method that updates the state of buttons on form
         /// </summary>
-        /// <param name="position"></param>
-        /// <param name="newState"></param>
         void ShowState(int position, MazeConsts.state newState)
         {
             Button btn = btnList[position];
@@ -108,10 +109,11 @@ namespace K191432_DDR_A1
                     btn.Text = "\u2193";
                     break;
             }
-
             Application.DoEvents();
             Thread.Sleep(200);
         }
+
+        //Extracted Methods
 
         void SetMazeSolverBehavior()
         {
@@ -122,21 +124,12 @@ namespace K191432_DDR_A1
                 mazesolver.SetSolverBehavior(new ShortestPathSolver(mazeconsts));
         }
 
-        private void btnSolve_Click(object sender, EventArgs e)
+        void SolveMaze()
         {
-            
-            this.SetMazeSolverBehavior();
-
-            btnGenerate.Enabled = false;
-            btnSolve.Enabled = false;
-            cmbSolvingBehavior.Enabled = false;
-
-            //Using Dynamically Selected Solving Algorithm to Solve Maze
-            lblProgress.Text = "Solving Maze using \n" + cmbSolvingBehavior.SelectedItem;
-            Application.DoEvents();
             int currentPos = mazeconsts.START_POS;
             while (currentPos != mazeconsts.END_POS)
             {
+                //processing is decoupled - MazeSolver object used to solve maze
                 MazeConsts.NextStep ret = mazesolver.SolveMaze(currentPos);
                 if (ret.nextPos == -1)
                 {
@@ -153,6 +146,24 @@ namespace K191432_DDR_A1
                 lblProgress.Text = "Maze Solved!";
                 MessageBox.Show("Solved!");
             }
+        }
+
+        private void btnSolve_Click(object sender, EventArgs e)
+        {
+            //Extract Method
+            this.SetMazeSolverBehavior();
+
+            btnGenerate.Enabled = false;
+            btnSolve.Enabled = false;
+            cmbSolvingBehavior.Enabled = false;
+
+            //Using Dynamically Selected Solving Algorithm to Solve Maze
+            lblProgress.Text = "Solving Maze using \n" + cmbSolvingBehavior.SelectedItem;
+            Application.DoEvents();
+
+            //Extract Method : Calling MazeSolver.SolveMaze
+            this.SolveMaze();
+
             btnGenerate.Enabled = true;
         }
     }
