@@ -10,27 +10,27 @@ namespace K191432_DDR_A1
     /// </summary>
     public class RecursiveSolver: MazeSolvingBehavior
     {
-        public MazeConsts MC;
+        public MazeConsts mazeconsts;
 
         public RecursiveSolver()
         {
-            this.MC = new MazeConsts();
+            this.mazeconsts = new MazeConsts();
         }
 
-        public RecursiveSolver(MazeConsts MC)
+        public RecursiveSolver(MazeConsts mazeconsts)
         {
-            this.MC = MC;
+            this.mazeconsts = mazeconsts;
         }
 
         private MazeConsts.state GetNextState(int currentPos, MazeConsts.state[,] states, MazeConsts.dir direction)
         {
             // convert the current pos into row and col index;
-            int rowIndex = currentPos / this.MC.SIZE;
-            int colIndex = currentPos % this.MC.SIZE;
+            int rowIndex = currentPos / this.mazeconsts.SIZE;
+            int colIndex = currentPos % this.mazeconsts.SIZE;
             switch (direction)
             {
                 case MazeConsts.dir.East:
-                    if (colIndex == this.MC.SIZE - 1)
+                    if (colIndex == this.mazeconsts.SIZE - 1)
                         return MazeConsts.state.NoState;
                     colIndex++;
                     break;
@@ -45,7 +45,7 @@ namespace K191432_DDR_A1
                     rowIndex--;
                     break;
                 case MazeConsts.dir.South:
-                    if (rowIndex == this.MC.SIZE - 1)
+                    if (rowIndex == this.mazeconsts.SIZE - 1)
                         return MazeConsts.state.NoState;
                     rowIndex++;
                     break;
@@ -58,8 +58,8 @@ namespace K191432_DDR_A1
         public int GetPos(int currentPos, MazeConsts.dir direction)
         {
             // convert the current pos into row and col index;
-            int rowIndex = currentPos / this.MC.SIZE;
-            int colIndex = currentPos % this.MC.SIZE;
+            int rowIndex = currentPos / this.mazeconsts.SIZE;
+            int colIndex = currentPos % this.mazeconsts.SIZE;
 
             //change position based on next direction
             if (direction == MazeConsts.dir.East) colIndex++;
@@ -67,7 +67,7 @@ namespace K191432_DDR_A1
             if (direction == MazeConsts.dir.North) rowIndex--;
             if (direction == MazeConsts.dir.South) rowIndex++;
 
-            return (rowIndex * this.MC.SIZE + colIndex);
+            return (rowIndex * this.mazeconsts.SIZE + colIndex);
         }
 
         public int GetAvailablePos(int currentPos, MazeConsts.state[,] states, out MazeConsts.dir direction)
@@ -115,7 +115,7 @@ namespace K191432_DDR_A1
             return -1;
         }
 
-        //Implementing Abstract Method
+        //Implementing Abstract Method : Working as a wrapper
         public int SolveMaze(int currentPos, MazeConsts.state[,] states, out MazeConsts.dir direction)
         {
             return GetAvailablePos(currentPos, states, out direction);
